@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from .serializers import JobSerializer, WorkerSerializer, ProfileSerializer, ContractorSerializer
 from rest_framework import status
 from django.contrib.auth import authenticate, login  # Import necessary functions
+from django.views.decorators.csrf import csrf_exempt
 
 
 def job_list(request):
@@ -22,6 +23,7 @@ def job_detail(request, job_id):
 def home(request):
     return HttpResponse("<h1>Welcome to Job Platform!</h1>")
 
+@csrf_exempt
 @api_view(['GET','POST'])
 def job_list_api(request):
     if request.method=='GET':
@@ -34,7 +36,7 @@ def job_list_api(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+@csrf_exempt
 @api_view(['GET','POST'])
 def worker_list_api(request):
     if request.method=='GET':
